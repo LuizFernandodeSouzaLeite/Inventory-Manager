@@ -111,11 +111,9 @@ export const TEMA_PALETAS = {
 
 // ── Cores fixas (não mudam com tema/cor) ──────────────────────────────────────
 const FIXAS = {
-  textPrimary:  "#EDE9DF",
-  textSecondary:"#C8C4BC",
-  textMuted:    "#4A4A4A",
-  textDim:      "#3A3A3A",
-  textGhost:    "#2A2A2A",
+  textPrimary:   "#EDE9DF",
+  textSecondary: "#C8C4BC",
+  textMuted:     "#4A4A4A",
 
   success:       "#22C55E",
   successDim:    "#22C55E15",
@@ -139,8 +137,24 @@ const FIXAS = {
 };
 
 // ── buildTheme: resolve prefs → objeto de tema completo ───────────────────────
+// textDim e textGhost agora são derivados do accent:
+//   textDim   = accent com 35% de opacidade → textos secundários visíveis e temáticos
+//   textGhost = accent com 20% de opacidade → textos muito sutis (labels, hints)
 export function buildTheme(prefs) {
-  const cor  = COR_PALETAS[prefs.corPrimaria]  || COR_PALETAS.gold;
-  const tema = TEMA_PALETAS[prefs.tema]         || TEMA_PALETAS.dark;
-  return { ...cor, ...tema, ...FIXAS };
+  const cor  = COR_PALETAS[prefs.corPrimaria] || COR_PALETAS.gold;
+  const tema = TEMA_PALETAS[prefs.tema]        || TEMA_PALETAS.dark;
+
+  // Derivados do accent — mudam junto com a cor escolhida
+  const derived = {
+    textDim:   cor.accent + "80",  // ~50% opacidade — labels, subtítulos, hints
+    textGhost: cor.accent + "45",  // ~27% opacidade — textos quase invisíveis
+    labelCaps: cor.accent + "60",  // letras maiúsculas de seção
+  };
+
+    // Aplica CSS variables no :root para label-caps e outros utilitários CSS
+  if (typeof document !== "undefined") {
+    document.documentElement.style.setProperty("--label-caps-color", derived.textDim);
+  }
+
+  return { ...cor, ...tema, ...FIXAS, ...derived };
 }

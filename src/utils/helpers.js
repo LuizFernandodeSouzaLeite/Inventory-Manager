@@ -1,5 +1,6 @@
 // src/utils/helpers.js
-// Funções utilitárias reutilizadas em todo o projeto.
+// v2.0 — fmtDataHora agora retorna ISO (YYYY-MM-DD HH:MM) para ordenação correta.
+//         Nova função fmtDataHoraBR para exibição em pt-BR.
 
 // ── Datas ─────────────────────────────────────────────────────────────────────
 
@@ -26,14 +27,32 @@ export const fmtData = (d) => {
   return `${dd}/${m}/${y}`;
 };
 
-/** Retorna data e hora atual no formato pt-BR (DD/MM/YYYY HH:MM). */
+/**
+ * Retorna data e hora atual em formato ISO ordenável: "YYYY-MM-DD HH:MM".
+ * Usado internamente nos movimentos para garantir ordenação correta por string.
+ */
 export const fmtDataHora = () => {
   const n = new Date();
-  return (
-    n.toLocaleDateString("pt-BR") +
-    " " +
-    n.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
-  );
+  const yyyy = n.getFullYear();
+  const mm   = String(n.getMonth() + 1).padStart(2, "0");
+  const dd   = String(n.getDate()).padStart(2, "0");
+  const hh   = String(n.getHours()).padStart(2, "0");
+  const min  = String(n.getMinutes()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+};
+
+/**
+ * Formata uma string de data/hora (YYYY-MM-DD HH:MM ou DD/MM/YYYY HH:MM)
+ * para exibição em pt-BR: "01/06/2026 14:30".
+ * Compatível com ambos os formatos (retrocompatibilidade com dados antigos).
+ */
+export const fmtDataHoraBR = (dataStr) => {
+  if (!dataStr) return "—";
+  // Já está no formato BR (dados antigos): "01/06/2026 14:30"
+  if (dataStr.includes("/")) return dataStr;
+  // Formato ISO: "2026-06-01 14:30"
+  const [datePart, timePart] = dataStr.split(" ");
+  return `${fmtData(datePart)}${timePart ? " " + timePart : ""}`;
 };
 
 // ── IDs ───────────────────────────────────────────────────────────────────────
@@ -52,8 +71,8 @@ export const uid = () => Math.random().toString(36).slice(2, 8).toUpperCase();
 export const statusValidade = (dataStr, diasAviso = 3) => {
   if (!dataStr) return null;
   const d = diasAte(dataStr);
-  if (d < 0)          return "vencido";
-  if (d <= diasAviso) return "critico";
+  if (d < 0)              return "vencido";
+  if (d <= diasAviso)     return "critico";
   if (d <= diasAviso * 3) return "atencao";
   return "ok";
 };

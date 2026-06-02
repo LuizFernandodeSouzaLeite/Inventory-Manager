@@ -80,7 +80,7 @@ function Toast({ msg, visible, t }) {
   );
 }
 
-export default function Configuracoes({ user, config, setConfig, prefs, setPref, t = {} }) {
+export default function Configuracoes({ user, config, setConfig, prefs, setPref, resetarDados, t = {} }) {
   const podeEditar = user.cargo === "adm_global" || user.cargo === "gerente";
   const [aba,       setAba]       = useState("aparencia");
   const [diasAviso, setDiasAviso] = useState(String(config.diasAviso));
@@ -380,10 +380,35 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
                 />
               </div>
             </Card>
+
+            {/* Dados e persistência */}
+            <Card>
+              <SecaoHeader icon={icons.estoque} title="Dados do Sistema" desc="Persistência local e gerenciamento" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <div style={{ marginTop: 12 }}>
+                {/* Info de persistência */}
+                <div style={{ padding: "10px 14px", borderRadius: 8, background: accentDim, border: `1px solid ${accentBorder}`, marginBottom: 14 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <Icon d={icons.check} size={13} style={{ color: accent, flexShrink: 0 }} />
+                    <div>
+                      <div style={{ fontSize: 12.5, color: "#C8C4BC", fontWeight: 500 }}>Dados salvos automaticamente</div>
+                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>
+                        Entradas, saídas, pedidos e estoque sobrevivem ao F5 via localStorage.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Reset — só para adm */}
+                {podeEditar && (
+                  <ResetCard resetarDados={resetarDados} border={border} bgBody={t.bgBody || "#080808"} />
+                )}
+              </div>
+            </Card>
+
             <Card>
               <SecaoHeader icon={icons.info} title="Sobre o Sistema" desc="Versão e informações técnicas" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
               <div style={{ marginTop: 10 }}>
-                {[["Sistema","Bartô — Gestão de Estoque"],["Versão","v3.0"],["Tipo","Protótipo frontend-only"],["Stack","React + Vite + Tailwind"],["Dados","Em memória (mock)"]].map(([k,v]) => (
+                {[["Sistema","Bartô — Gestão de Estoque"],["Versão","v3.4"],["Persistência","localStorage (navegador)"],["Stack","React + Vite + Tailwind"],["Dados","Salvos automaticamente"]].map(([k,v]) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: `1px solid ${border}` }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10.5, color: "#3A3A3A", letterSpacing: "0.06em" }}>{k.toUpperCase()}</span>
                     <span style={{ fontSize: 12.5, color: "#C8C4BC" }}>{v}</span>
@@ -456,6 +481,53 @@ function OpcaoCard({ selecionado, onClick, label, desc, accent, accentDim, accen
       </div>
       <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: selecionado ? `${accent}70` : "#2A2A2A" }}>{desc}</div>
     </button>
+  );
+}
+
+// ── ResetCard — botão de reset com confirmação dupla ─────────────────────────
+function ResetCard({ resetarDados, border, bgBody }) {
+  const [confirmando, setConfirmando] = useState(false);
+
+  const handleReset = () => {
+    if (!confirmando) {
+      setConfirmando(true);
+      setTimeout(() => setConfirmando(false), 4000); // cancela automaticamente em 4s
+      return;
+    }
+    resetarDados();
+    setConfirmando(false);
+  };
+
+  return (
+    <div style={{ padding: "12px 14px", borderRadius: 8, background: bgBody, border: `1px solid ${confirmando ? "#EF444440" : border}`, transition: "border-color 0.2s" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontSize: 13, color: confirmando ? "#EF4444" : "#C8C4BC", fontWeight: 500, transition: "color 0.2s" }}>
+            {confirmando ? "⚠️ Confirmar reset?" : "Resetar dados do sistema"}
+          </div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>
+            {confirmando
+              ? "Isso apagará todos os dados. Clique novamente para confirmar."
+              : "Volta para os dados iniciais (mock). Não afeta preferências visuais."}
+          </div>
+        </div>
+        <button
+          onClick={handleReset}
+          style={{
+            padding: "7px 14px", borderRadius: 8, flexShrink: 0, marginLeft: 12,
+            background: confirmando ? "#EF444420" : "#141414",
+            border: `1px solid ${confirmando ? "#EF444440" : border}`,
+            color: confirmando ? "#EF4444" : "#555",
+            fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600,
+            cursor: "pointer", transition: "all 0.15s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "#EF444440"; e.currentTarget.style.color = "#EF4444"; e.currentTarget.style.background = "#EF444415"; }}
+          onMouseLeave={e => { if (!confirmando) { e.currentTarget.style.borderColor = border; e.currentTarget.style.color = "#555"; e.currentTarget.style.background = "#141414"; } }}
+        >
+          {confirmando ? "Confirmar reset" : "Resetar"}
+        </button>
+      </div>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
-// src/components/Layout.jsx — v3.2 — item "Gráficos" adicionado ao NAV
+// src/components/Layout.jsx — v3.3
+// Adicionado badge de retiradas físicas pendentes no header.
 
 import { useState } from "react";
 import Icon, { icons } from "./Icon";
@@ -18,7 +19,7 @@ export const NAV = [
   { id: "config",     label: "Configurações", icon: "config"     },
 ];
 
-export default function Layout({ children, active, setActive, user, onLogout, alertCount, t = {} }) {
+export default function Layout({ children, active, setActive, user, onLogout, alertCount, retiradasPendentes = 0, t = {} }) {
   const [sideOpen, setSideOpen] = useState(true);
 
   const accent       = t.accent       || "#C9A84C";
@@ -33,8 +34,8 @@ export default function Layout({ children, active, setActive, user, onLogout, al
   return (
     <div style={{ display:"flex", height:"100vh", overflow:"hidden", background:bgBody, fontFamily:"'DM Sans',sans-serif" }}>
 
+      {/* Sidebar */}
       <aside style={{ width:sideOpen?228:56, minWidth:sideOpen?228:56, background:bgSidebar, borderRight:`1px solid ${accentBorder}`, transition:"width 300ms cubic-bezier(0.4,0,0.2,1),min-width 300ms cubic-bezier(0.4,0,0.2,1)", display:"flex", flexDirection:"column", height:"100%", overflow:"hidden", position:"relative", zIndex:20, flexShrink:0 }}>
-
         <div style={{ height:1, background:`linear-gradient(90deg,transparent,${accent}55,transparent)`, flexShrink:0 }}/>
 
         {/* Logo */}
@@ -53,8 +54,9 @@ export default function Layout({ children, active, setActive, user, onLogout, al
           {NAV.map(({ id, label, icon }) => (
             <NavItem key={id} id={id} label={label} icon={icon}
               isActive={active===id}
-              isAlerta={id==="alertas"&&alertCount>0}
+              isAlerta={id==="alertas" && (alertCount > 0 || retiradasPendentes > 0)}
               alertCount={alertCount}
+              retiradasPendentes={retiradasPendentes}
               sideOpen={sideOpen}
               onClick={()=>setActive(id)}
               accent={accent} accentDim={accentDim} accentBorder={accentBorder} bgElevated={bgElevated}
@@ -68,7 +70,9 @@ export default function Layout({ children, active, setActive, user, onLogout, al
         </div>
       </aside>
 
+      {/* Área principal */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", minWidth:0 }}>
+
         {/* Header */}
         <header style={{ display:"flex", alignItems:"center", gap:10, padding:"0 20px", height:52, background:bgSidebar, borderBottom:`1px solid ${border}`, position:"relative", flexShrink:0 }}>
           <div style={{ position:"absolute", bottom:0, left:0, right:0, height:1, background:`linear-gradient(90deg,transparent,${accent}18,transparent)`, pointerEvents:"none" }}/>
@@ -80,15 +84,33 @@ export default function Layout({ children, active, setActive, user, onLogout, al
 
           <div style={{ flex:1 }}/>
 
-          {alertCount>0&&(
-            <button onClick={()=>setActive("alertas")} style={{ display:"flex",alignItems:"center",gap:7,padding:"5px 11px",borderRadius:7,border:"1px solid #F9731628",background:"#F9731610",color:"#F97316",cursor:"pointer",transition:"background 0.15s,border-color 0.15s" }}
+          {/* Badge retiradas físicas — vermelho, pulsante, impossível de ignorar */}
+          {retiradasPendentes > 0 && (
+            <button onClick={()=>setActive("alertas")} style={{ display:"flex", alignItems:"center", gap:7, padding:"5px 11px", borderRadius:7, border:"1px solid #EF444440", background:"#EF444415", color:"#EF4444", cursor:"pointer", transition:"background 0.15s,border-color 0.15s", animation:"barto-pulse-red 2s infinite" }}
+              onMouseEnter={e=>{e.currentTarget.style.background="#EF444425";e.currentTarget.style.borderColor="#EF444460";}}
+              onMouseLeave={e=>{e.currentTarget.style.background="#EF444415";e.currentTarget.style.borderColor="#EF444440";}}
+            >
+              <Icon d={icons.alertas} size={13}/>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, fontWeight:700 }}>{retiradasPendentes}</span>
+              <span style={{ fontSize:11, color:"#EF444499" }}>retirada{retiradasPendentes!==1?"s":""} pendente{retiradasPendentes!==1?"s":""}</span>
+            </button>
+          )}
+
+          {/* Badge alertas normais */}
+          {alertCount > 0 && (
+            <button onClick={()=>setActive("alertas")} style={{ display:"flex", alignItems:"center", gap:7, padding:"5px 11px", borderRadius:7, border:"1px solid #F9731628", background:"#F9731610", color:"#F97316", cursor:"pointer", transition:"background 0.15s,border-color 0.15s" }}
               onMouseEnter={e=>{e.currentTarget.style.background="#F9731620";e.currentTarget.style.borderColor="#F9731640";}}
               onMouseLeave={e=>{e.currentTarget.style.background="#F9731610";e.currentTarget.style.borderColor="#F9731628";}}
-            ><Icon d={icons.alertas} size={13}/><span style={{ fontFamily:"'DM Mono',monospace",fontSize:12,fontWeight:600 }}>{alertCount}</span><span style={{ fontSize:12,color:"#F97316AA" }}>alertas</span></button>
+            >
+              <Icon d={icons.alertas} size={13}/>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, fontWeight:600 }}>{alertCount}</span>
+              <span style={{ fontSize:12, color:"#F97316AA" }}>alertas</span>
+            </button>
           )}
 
           <div style={{ width:1,height:22,background:border }}/>
 
+          {/* Perfil */}
           <div style={{ display:"flex",alignItems:"center",gap:9,padding:"5px 10px",borderRadius:8,border:"1px solid transparent",cursor:"pointer",transition:"background 0.15s,border-color 0.15s" }}
             onMouseEnter={e=>{e.currentTarget.style.background=bgElevated;e.currentTarget.style.borderColor=border;}}
             onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor="transparent";}}
@@ -111,8 +133,11 @@ export default function Layout({ children, active, setActive, user, onLogout, al
   );
 }
 
-function NavItem({ id, label, icon, isActive, isAlerta, alertCount, sideOpen, onClick, accent, accentDim, accentBorder, bgElevated }) {
+function NavItem({ id, label, icon, isActive, isAlerta, alertCount, retiradasPendentes, sideOpen, onClick, accent, accentDim, accentBorder, bgElevated }) {
   const [hover, setHover] = useState(false);
+  const totalBadge = (alertCount || 0) + (retiradasPendentes || 0);
+  const temRetirada = retiradasPendentes > 0;
+
   return (
     <button onClick={onClick} title={!sideOpen?label:undefined}
       onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}
@@ -125,7 +150,12 @@ function NavItem({ id, label, icon, isActive, isAlerta, alertCount, sideOpen, on
       <span style={{ fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:isActive?500:400,whiteSpace:"nowrap",overflow:"hidden",flex:1,textAlign:"left",opacity:sideOpen?1:0,maxWidth:sideOpen?160:0,transition:"opacity 180ms ease,max-width 300ms cubic-bezier(0.4,0,0.2,1)" }}>
         {label}
       </span>
-      {isAlerta&&<span style={{ display:"flex",alignItems:"center",justifyContent:"center",background:"#F97316",borderRadius:5,fontFamily:"'DM Mono',monospace",fontWeight:600,color:"#fff",flexShrink:0,...(sideOpen?{width:18,height:18,fontSize:10}:{width:14,height:14,fontSize:8,position:"absolute",top:4,right:4,zIndex:11}) }}>{alertCount>9?"9+":alertCount}</span>}
+      {/* Badge — vermelho se tem retirada pendente, laranja se só alertas */}
+      {isAlerta&&(
+        <span style={{ display:"flex",alignItems:"center",justifyContent:"center",background:temRetirada?"#EF4444":"#F97316",borderRadius:5,fontFamily:"'DM Mono',monospace",fontWeight:600,color:"#fff",flexShrink:0,animation:temRetirada?"barto-pulse-red 2s infinite":"none",...(sideOpen?{width:18,height:18,fontSize:10}:{width:14,height:14,fontSize:8,position:"absolute",top:4,right:4,zIndex:11}) }}>
+          {totalBadge>9?"9+":totalBadge}
+        </span>
+      )}
     </button>
   );
 }
