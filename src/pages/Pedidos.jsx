@@ -375,7 +375,7 @@ export default function Pedidos({ pedidos, setPedidos, produtos, ingredientes, l
                     onAjuste={(ingId,delta)=>adicionarAjuste(item.produtoId,ingId,delta)}
                     onRemAjuste={ingId=>remAjuste(item.produtoId,ingId)}
                     accent={accent} accentDim={accentDim} accentBorder={accentBorder}
-                    border={border} borderMid={borderMid} bgBody={bgBody}
+                    border={border} borderMid={borderMid} bgBody={bgBody} bgElevated={bgElevated} t={t}
                   />
                 );
               })}
@@ -406,10 +406,13 @@ export default function Pedidos({ pedidos, setPedidos, produtos, ingredientes, l
 }
 
 // ── Linha de item no modal ────────────────────────────────────────────────────
-function ItemRow({ item, produto: p, ingredientes, onUpdQtd, onRem, onAjuste, onRemAjuste, accent, accentDim, accentBorder, border, borderMid, bgBody }) {
+function ItemRow({ item, produto: p, ingredientes, onUpdQtd, onRem, onAjuste, onRemAjuste, accent, accentDim, accentBorder, border, borderMid, bgBody, bgElevated, t={} }) {
   const [ingSel,   setIngSel]   = useState("");
   const [deltaSel, setDeltaSel] = useState("");
   const [showAdj,  setShowAdj]  = useState(false);
+
+  const textPrimary = t.textPrimary || "#EDE9DF";
+  const textMuted   = t.textMuted   || "#555";
 
   return (
     <div style={{ borderRadius:9, background:bgBody, border:`1px solid ${border}`, overflow:"hidden" }}>
@@ -417,19 +420,19 @@ function ItemRow({ item, produto: p, ingredientes, onUpdQtd, onRem, onAjuste, on
       <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 14px" }}>
         <span style={{ fontSize:20, flexShrink:0 }}>{p?.emoji}</span>
         <div style={{ flex:1, minWidth:0 }}>
-          <div style={{ fontSize:13.5, color:t.textPrimary||"#EDE9DF", fontWeight:600 }}>{p?.nome}</div>
-          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textMuted||"#555", marginTop:1 }}>R$ {p?.preco?.toFixed(2)} / un</div>
+          <div style={{ fontSize:13.5, color:textPrimary, fontWeight:600 }}>{p?.nome}</div>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:textMuted, marginTop:1 }}>R$ {p?.preco?.toFixed(2)} / un</div>
         </div>
         {/* Quantidade */}
         <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-          <button onClick={()=>onUpdQtd(-1)} style={{ width:28, height:28, borderRadius:7, background:border, border:`1px solid ${border}`, color:t.textMuted||"#666", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, transition:"all 0.15s" }}
-            onMouseEnter={e=>{ e.currentTarget.style.color="#EDE9DF"; e.currentTarget.style.borderColor=borderMid; }}
-            onMouseLeave={e=>{ e.currentTarget.style.color="#666"; e.currentTarget.style.borderColor=border; }}
+          <button onClick={()=>onUpdQtd(-1)} style={{ width:28, height:28, borderRadius:7, background:bgElevated, border:`1px solid ${border}`, color:textMuted, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, transition:"all 0.15s" }}
+            onMouseEnter={e=>{ e.currentTarget.style.color=textPrimary; e.currentTarget.style.borderColor=borderMid; }}
+            onMouseLeave={e=>{ e.currentTarget.style.color=textMuted; e.currentTarget.style.borderColor=border; }}
           >−</button>
-          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:15, fontWeight:700, color:t.textPrimary||"#EDE9DF", width:24, textAlign:"center" }}>{item.quantidade}</span>
-          <button onClick={()=>onUpdQtd(+1)} style={{ width:28, height:28, borderRadius:7, background:border, border:`1px solid ${border}`, color:t.textMuted||"#666", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, transition:"all 0.15s" }}
-            onMouseEnter={e=>{ e.currentTarget.style.color="#EDE9DF"; e.currentTarget.style.borderColor=borderMid; }}
-            onMouseLeave={e=>{ e.currentTarget.style.color="#666"; e.currentTarget.style.borderColor=border; }}
+          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:15, fontWeight:700, color:textPrimary, width:24, textAlign:"center" }}>{item.quantidade}</span>
+          <button onClick={()=>onUpdQtd(+1)} style={{ width:28, height:28, borderRadius:7, background:bgElevated, border:`1px solid ${border}`, color:textMuted, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, transition:"all 0.15s" }}
+            onMouseEnter={e=>{ e.currentTarget.style.color=textPrimary; e.currentTarget.style.borderColor=borderMid; }}
+            onMouseLeave={e=>{ e.currentTarget.style.color=textMuted; e.currentTarget.style.borderColor=border; }}
           >+</button>
         </div>
         <span style={{ fontFamily:"'DM Mono',monospace", fontSize:14, fontWeight:700, color:accent, width:70, textAlign:"right" }}>
