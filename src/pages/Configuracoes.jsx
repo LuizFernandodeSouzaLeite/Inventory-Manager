@@ -7,10 +7,10 @@ import { Badge, Card } from "../components/UI";
 import { cargoColor } from "../utils/helpers";
 
 const TEMAS = [
-  { id: "dark",         label: "Escuro",        desc: "Padrão do sistema" },
-  { id: "darker",       label: "Mais Escuro",    desc: "Preto absoluto"   },
-  { id: "highContrast", label: "Alto Contraste", desc: "Acessibilidade"   },
-  { id: "minimal",      label: "Minimalista",    desc: "Sem distrações"   },
+  { id: "dark",         label: "Escuro",         desc: "Padrão do sistema"  },
+  { id: "light",        label: "Claro",           desc: "Fundo branco"       },
+  { id: "highContrast", label: "Alto Contraste",  desc: "Acessibilidade"     },
+  { id: "minimal",      label: "Minimalista",     desc: "Sem distrações"     },
 ];
 
 const CORES = [
@@ -57,7 +57,7 @@ function Toast({ msg, visible, t }) {
       position: "fixed", bottom: 24, right: 24, zIndex: 9999,
       display: "flex", alignItems: "center", gap: 9,
       padding: "10px 16px", borderRadius: 10,
-      background: t?.bgCard || "#0F0F0F",
+      background: t?.bgCard || "#FAFAF8",
       border: `1px solid ${accent}35`,
       boxShadow: `0 8px 32px #00000060, 0 0 0 1px ${accent}0C`,
       opacity: visible ? 1 : 0,
@@ -73,7 +73,7 @@ function Toast({ msg, visible, t }) {
       }}>
         <Icon d={icons.check} size={10} style={{ strokeWidth: 3 }} />
       </span>
-      <span style={{ fontSize: 12.5, color: "#C8C4BC", fontFamily: "'DM Sans', sans-serif" }}>
+      <span style={{ fontSize: 12.5, color: t?.textSecondary||"#C8C4BC", fontFamily: "'DM Sans', sans-serif" }}>
         {msg}
       </span>
     </div>
@@ -125,10 +125,10 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
       <Toast msg={toastMsg} visible={toastVisible} t={t} />
 
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22, letterSpacing: "-0.03em", color: "#EDE9DF" }}>
+        <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22, letterSpacing: "-0.03em", color: t.textPrimary||"#EDE9DF" }}>
           Configurações
         </h2>
-        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10.5, color: "#3A3A3A", marginTop: 5, letterSpacing: "0.06em" }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10.5, color: t.textDim||"#3A3A3A", marginTop: 5, letterSpacing: "0.06em" }}>
           PREFERÊNCIAS · APARÊNCIA · SISTEMA · PERMISSÕES
         </p>
       </div>
@@ -173,21 +173,21 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
           {/* ── APARÊNCIA ───────────────────────────────────────────── */}
           {aba === "aparencia" && <>
             <Card>
-              <SecaoHeader icon={icons.eye} title="Tema Visual" desc="Profundidade de cor do sistema" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.eye} title="Tema Visual" desc="Profundidade de cor do sistema" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12 }}>
                 {TEMAS.map(tm => (
                   <OpcaoCard key={tm.id}
                     selecionado={prefs.tema === tm.id}
                     onClick={() => mudarPref("tema", tm.id)}
                     label={tm.label} desc={tm.desc}
-                    accent={accent} accentDim={accentDim} accentBorder={accentBorder}
+                    accent={accent} accentDim={accentDim} accentBorder={accentBorder} border={border} t={t}
                   />
                 ))}
               </div>
             </Card>
 
             <Card>
-              <SecaoHeader icon={icons.tag} title="Cor de Destaque" desc="Cor principal da interface" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.tag} title="Cor de Destaque" desc="Cor principal da interface" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap", alignItems: "center" }}>
                 {CORES.map(c => {
                   const sel = prefs.corPrimaria === c.id;
@@ -207,10 +207,10 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
                   );
                 })}
                 <div style={{ marginLeft: 4 }}>
-                  <div style={{ fontSize: 13, color: "#C8C4BC", fontWeight: 500 }}>
+                  <div style={{ fontSize: 13, color: t.textSecondary||"#C8C4BC", fontWeight: 500 }}>
                     {CORES.find(c => c.id === prefs.corPrimaria)?.label}
                   </div>
-                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>
                     {CORES.find(c => c.id === prefs.corPrimaria)?.hex}
                   </div>
                 </div>
@@ -218,14 +218,14 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
             </Card>
 
             <Card>
-              <SecaoHeader icon={icons.menu} title="Densidade Visual" desc="Espaçamento dos elementos" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.menu} title="Densidade Visual" desc="Espaçamento dos elementos" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
                 {DENSIDADES.map(d => (
                   <OpcaoCard key={d.id}
                     selecionado={prefs.densidadeVisual === d.id}
                     onClick={() => mudarPref("densidadeVisual", d.id)}
                     label={d.label} desc={d.desc}
-                    accent={accent} accentDim={accentDim} accentBorder={accentBorder}
+                    accent={accent} accentDim={accentDim} accentBorder={accentBorder} border={border} t={t}
                   />
                 ))}
               </div>
@@ -235,21 +235,21 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
           {/* ── DASHBOARDS ──────────────────────────────────────────── */}
           {aba === "dashboards" && <>
             <Card>
-              <SecaoHeader icon={icons.dashboard} title="Modo dos Dashboards" desc="Como as informações são exibidas" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.dashboard} title="Modo dos Dashboards" desc="Como as informações são exibidas" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
                 {MODOS_DASHBOARD.map(m => (
                   <OpcaoCard key={m.id}
                     selecionado={prefs.modoDashboard === m.id}
                     onClick={() => mudarPref("modoDashboard", m.id)}
                     label={m.label} desc={m.desc}
-                    accent={accent} accentDim={accentDim} accentBorder={accentBorder}
+                    accent={accent} accentDim={accentDim} accentBorder={accentBorder} border={border} t={t}
                   />
                 ))}
               </div>
             </Card>
 
             <Card>
-              <SecaoHeader icon={icons.barChart} title="Tipo de Gráfico" desc="Estilo padrão para visualização de dados" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.barChart} title="Tipo de Gráfico" desc="Estilo padrão para visualização de dados" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
                 {GRAFICOS.map(g => {
                   const sel = prefs.tipoGrafico === g.id;
@@ -261,7 +261,7 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
                         gap: 7, width: 82, height: 74,
                         borderRadius: 10, position: "relative",
                         border: `1px solid ${sel ? accentBorder : border}`,
-                        background: sel ? accentDim : bgCard,
+                        background: sel ? accentDim : (t?.bgElevated || bgCard),
                         color: sel ? accent : "#444",
                         cursor: "pointer",
                         fontSize: 11.5, fontFamily: "'DM Sans', sans-serif",
@@ -286,7 +286,7 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
           {aba === "alertas" && <>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               <Card>
-                <SecaoHeader icon={icons.clock} title="Aviso de Validade" desc="Dias antes do vencimento para alertar" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+                <SecaoHeader icon={icons.clock} title="Aviso de Validade" desc="Dias antes do vencimento para alertar" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 10 }}>
                   <input type="number" min="1" max="30" value={diasAviso}
                     onChange={e => setDiasAviso(e.target.value)}
@@ -294,15 +294,15 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
                     style={{
                       width: 64, padding: "10px 8px", borderRadius: 8, textAlign: "center",
                       background: bgElevated, border: `1px solid ${borderMid}`,
-                      color: "#EDE9DF", fontSize: 22, fontFamily: "'DM Mono', monospace", fontWeight: 600,
+                      color: t.textPrimary||"#EDE9DF", fontSize: 22, fontFamily: "'DM Mono', monospace", fontWeight: 600,
                       outline: "none", opacity: podeEditar ? 1 : 0.5,
                     }}
                     onFocus={e => e.target.style.borderColor = accentBorder}
                     onBlur={e => e.target.style.borderColor = borderMid}
                   />
                   <div>
-                    <div style={{ fontSize: 13, color: "#C8C4BC", fontWeight: 500 }}>{diasAviso} {Number(diasAviso) === 1 ? "dia" : "dias"} antes</div>
-                    <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>Atual: {config.diasAviso}d</div>
+                    <div style={{ fontSize: 13, color: t.textSecondary||"#C8C4BC", fontWeight: 500 }}>{diasAviso} {Number(diasAviso) === 1 ? "dia" : "dias"} antes</div>
+                    <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>Atual: {config.diasAviso}d</div>
                   </div>
                 </div>
                 {podeEditar && (
@@ -321,7 +321,7 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
                 )}
               </Card>
               <Card>
-                <SecaoHeader icon={icons.bell} title="Notificações" desc="Controle de avisos ativos" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+                <SecaoHeader icon={icons.bell} title="Notificações" desc="Controle de avisos ativos" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
                 <div style={{ marginTop: 10 }}>
                   <ToggleItem label="Badge de alertas" desc="Contador na sidebar e header" ativo={true} disabled accent={accent} />
                 </div>
@@ -329,18 +329,18 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
             </div>
 
             <Card>
-              <SecaoHeader icon={icons.calendar} title="Prazos por Categoria" desc="Validade padrão ao registrar entrada de lote (em dias)" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.calendar} title="Prazos por Categoria" desc="Validade padrão ao registrar entrada de lote (em dias)" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8, marginTop: 12 }}>
                 {Object.entries(prazos).map(([cat, dias]) => (
                   <div key={cat} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", borderRadius: 8, background: t.bgBody || "#080808", border: `1px solid ${border}` }}>
-                    <span style={{ fontSize: 12.5, color: "#C8C4BC" }}>{cat}</span>
+                    <span style={{ fontSize: 12.5, color: t?.textSecondary||"#C8C4BC" }}>{cat}</span>
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                       <input type="number" min="1" value={dias}
                         onChange={e => setPrazos(prev => ({ ...prev, [cat]: Number(e.target.value) }))}
                         disabled={!podeEditar}
-                        style={{ width: 52, padding: "5px 6px", borderRadius: 6, textAlign: "center", background: bgElevated, border: `1px solid ${borderMid}`, color: "#EDE9DF", fontSize: 13, fontFamily: "'DM Mono', monospace", fontWeight: 600, outline: "none", opacity: podeEditar ? 1 : 0.5 }}
+                        style={{ width: 52, padding: "5px 6px", borderRadius: 6, textAlign: "center", background: bgElevated, border: `1px solid ${borderMid}`, color: t.textPrimary||"#EDE9DF", fontSize: 13, fontFamily: "'DM Mono', monospace", fontWeight: 600, outline: "none", opacity: podeEditar ? 1 : 0.5 }}
                       />
-                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#333" }}>dias</span>
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t.textDim||"#333" }}>dias</span>
                     </div>
                   </div>
                 ))}
@@ -351,10 +351,10 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
               <button onClick={salvarSistema} style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 padding: "10px 22px", borderRadius: 8, border: "none",
-                background: `linear-gradient(135deg, ${accent}, ${t.accentDark || "#9A7A2E"})`,
-                color: t.accentText || "#080808",
+                background: "linear-gradient(135deg,#34D399,#10B981)",
+                color: "#fff",
                 fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
-                cursor: "pointer", boxShadow: `0 2px 12px ${accentDim}`,
+                cursor: "pointer", boxShadow: "0 2px 12px #10B98130",
                 transition: "filter 0.15s, transform 0.15s",
               }}
               onMouseEnter={e => { e.currentTarget.style.filter = "brightness(1.1)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
@@ -369,7 +369,7 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
           {/* ── SISTEMA ─────────────────────────────────────────────── */}
           {aba === "sistema" && <>
             <Card>
-              <SecaoHeader icon={icons.zap} title="Animações" desc="Transições e efeitos visuais" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.zap} title="Animações" desc="Transições e efeitos visuais" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ marginTop: 10 }}>
                 <ToggleItem
                   label="Animações de transição"
@@ -383,15 +383,15 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
 
             {/* Dados e persistência */}
             <Card>
-              <SecaoHeader icon={icons.estoque} title="Dados do Sistema" desc="Persistência local e gerenciamento" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.estoque} title="Dados do Sistema" desc="Persistência local e gerenciamento" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ marginTop: 12 }}>
                 {/* Info de persistência */}
                 <div style={{ padding: "10px 14px", borderRadius: 8, background: accentDim, border: `1px solid ${accentBorder}`, marginBottom: 14 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Icon d={icons.check} size={13} style={{ color: accent, flexShrink: 0 }} />
                     <div>
-                      <div style={{ fontSize: 12.5, color: "#C8C4BC", fontWeight: 500 }}>Dados salvos automaticamente</div>
-                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>
+                      <div style={{ fontSize: 12.5, color: t.textSecondary||"#C8C4BC", fontWeight: 500 }}>Dados salvos automaticamente</div>
+                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>
                         Entradas, saídas, pedidos e estoque sobrevivem ao F5 via localStorage.
                       </div>
                     </div>
@@ -400,18 +400,18 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
 
                 {/* Reset — só para adm */}
                 {podeEditar && (
-                  <ResetCard resetarDados={resetarDados} border={border} bgBody={t.bgBody || "#080808"} />
+                  <ResetCard resetarDados={resetarDados} border={border} bgBody={t.bgBody || "#080808"} t={t} />
                 )}
               </div>
             </Card>
 
             <Card>
-              <SecaoHeader icon={icons.info} title="Sobre o Sistema" desc="Versão e informações técnicas" accent={accent} accentDim={accentDim} accentBorder={accentBorder} />
+              <SecaoHeader icon={icons.info} title="Sobre o Sistema" desc="Versão e informações técnicas" accent={accent} accentDim={accentDim} accentBorder={accentBorder} t={t} />
               <div style={{ marginTop: 10 }}>
                 {[["Sistema","Bartô — Gestão de Estoque"],["Versão","v3.4"],["Persistência","localStorage (navegador)"],["Stack","React + Vite + Tailwind"],["Dados","Salvos automaticamente"]].map(([k,v]) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: `1px solid ${border}` }}>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10.5, color: "#3A3A3A", letterSpacing: "0.06em" }}>{k.toUpperCase()}</span>
-                    <span style={{ fontSize: 12.5, color: "#C8C4BC" }}>{v}</span>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10.5, color: t.textDim||"#3A3A3A", letterSpacing: "0.06em" }}>{k.toUpperCase()}</span>
+                    <span style={{ fontSize: 12.5, color: t?.textSecondary||"#C8C4BC" }}>{v}</span>
                   </div>
                 ))}
               </div>
@@ -427,11 +427,11 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
             <Card key={cargo}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <Badge className={cargoColor(cargo)}>{label}</Badge>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A" }}>{ps.length} permissões</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t.textDim||"#3A3A3A" }}>{ps.length} permissões</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {ps.map(p => (
-                  <span key={p} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11.5, padding: "3px 10px", borderRadius: 5, background: t.bgBody || "#0A0A0A", border: `1px solid ${border}`, color: "#666" }}>
+                  <span key={p} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11.5, padding: "3px 10px", borderRadius: 5, background: t.bgBody || "#0A0A0A", border: `1px solid ${border}`, color: t.textMuted||"#666" }}>
                     <Icon d={icons.check} size={10} style={{ color: "#4ADE80" }} />
                     {p}
                   </span>
@@ -447,45 +447,48 @@ export default function Configuracoes({ user, config, setConfig, prefs, setPref,
 }
 
 // ── Helpers internos ──────────────────────────────────────────────────────────
-function SecaoHeader({ icon, title, desc, accent, accentDim, accentBorder }) {
+function SecaoHeader({ icon, title, desc, accent, accentDim, accentBorder, t={} }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
       <div style={{ width: 30, height: 30, borderRadius: 8, flexShrink: 0, background: accentDim, border: `1px solid ${accentBorder}`, display: "flex", alignItems: "center", justifyContent: "center", color: accent }}>
         <Icon d={icon} size={14} />
       </div>
       <div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#EDE9DF", lineHeight: 1.2 }}>{title}</div>
-        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>{desc}</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: t?.textPrimary||"#EDE9DF", lineHeight: 1.2 }}>{title}</div>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>{desc}</div>
       </div>
     </div>
   );
 }
 
-function OpcaoCard({ selecionado, onClick, label, desc, accent, accentDim, accentBorder }) {
+function OpcaoCard({ selecionado, onClick, label, desc, accent, accentDim, accentBorder, border="", t={} }) {
+  const borderMid = t?.borderMid || "#252525";
+  const bgCard    = t?.bgCard    || "#0F0F0F";
+  const bgBody    = t?.bgBody    || "#080808";
   return (
     <button onClick={onClick} style={{
       padding: "11px 14px", borderRadius: 9, textAlign: "left", width: "100%", cursor: "pointer",
-      border: `1px solid ${selecionado ? accentBorder : "#1A1A1A"}`,
-      background: selecionado ? accentDim : "#0A0A0A",
+      border: `1px solid ${selecionado ? accentBorder : border}`,
+      background: selecionado ? accentDim : bgBody,
       transition: "all 0.15s",
       boxShadow: selecionado ? `inset 0 0 0 1px ${accentBorder}` : "none",
     }}
-    onMouseEnter={e => { if (!selecionado) e.currentTarget.style.borderColor = "#252525"; }}
-    onMouseLeave={e => { if (!selecionado) e.currentTarget.style.borderColor = "#1A1A1A"; }}
+    onMouseEnter={e => { if (!selecionado) e.currentTarget.style.borderColor = borderMid; }}
+    onMouseLeave={e => { if (!selecionado) e.currentTarget.style.borderColor = border; }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-        <span style={{ fontSize: 12.5, fontWeight: 500, color: selecionado ? accent : "#C8C4BC" }}>{label}</span>
-        <span style={{ width: 16, height: 16, borderRadius: "50%", flexShrink: 0, background: selecionado ? accent : "transparent", border: selecionado ? "none" : "1px solid #2A2A2A", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}>
+        <span style={{ fontSize: 12.5, fontWeight: 500, color: selecionado ? accent : (t?.textSecondary || "#C8C4BC") }}>{label}</span>
+        <span style={{ width: 16, height: 16, borderRadius: "50%", flexShrink: 0, background: selecionado ? accent : "transparent", border: selecionado ? "none" : `1px solid ${borderMid}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}>
           {selecionado && <Icon d={icons.check} size={9} style={{ color: "#080808", strokeWidth: 3 }} />}
         </span>
       </div>
-      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: selecionado ? `${accent}70` : "#2A2A2A" }}>{desc}</div>
+      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: selecionado ? `${accent}70` : (t?.textGhost || "#2A2A2A") }}>{desc}</div>
     </button>
   );
 }
 
 // ── ResetCard — botão de reset com confirmação dupla ─────────────────────────
-function ResetCard({ resetarDados, border, bgBody }) {
+function ResetCard({ resetarDados, border, bgBody, t={} }) {
   const [confirmando, setConfirmando] = useState(false);
 
   const handleReset = () => {
@@ -502,10 +505,10 @@ function ResetCard({ resetarDados, border, bgBody }) {
     <div style={{ padding: "12px 14px", borderRadius: 8, background: bgBody, border: `1px solid ${confirmando ? "#EF444440" : border}`, transition: "border-color 0.2s" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <div style={{ fontSize: 13, color: confirmando ? "#EF4444" : "#C8C4BC", fontWeight: 500, transition: "color 0.2s" }}>
+          <div style={{ fontSize: 13, color: confirmando ? "#EF4444" : (t?.textSecondary || "#C8C4BC"), fontWeight: 500, transition: "color 0.2s" }}>
             {confirmando ? "⚠️ Confirmar reset?" : "Resetar dados do sistema"}
           </div>
-          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>
             {confirmando
               ? "Isso apagará todos os dados. Clique novamente para confirmar."
               : "Volta para os dados iniciais (mock). Não afeta preferências visuais."}
@@ -531,17 +534,17 @@ function ResetCard({ resetarDados, border, bgBody }) {
   );
 }
 
-function ToggleItem({ label, desc, ativo, onChange, disabled, accent }) {
+function ToggleItem({ label, desc, ativo, onChange, disabled, accent, t={} }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div>
-        <div style={{ fontSize: 13, color: "#C8C4BC", fontWeight: 500 }}>{label}</div>
-        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#3A3A3A", marginTop: 2 }}>{desc}</div>
+        <div style={{ fontSize: 13, color: t?.textSecondary||"#C8C4BC", fontWeight: 500 }}>{label}</div>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: t?.textDim||"#3A3A3A", marginTop: 2 }}>{desc}</div>
       </div>
       <button onClick={!disabled ? onChange : undefined} style={{
         width: 42, height: 23, borderRadius: 12, flexShrink: 0,
-        background: ativo ? (accent || "#C9A84C") : "#1E1E1E",
-        border: `1px solid ${ativo ? `${accent || "#C9A84C"}50` : "#252525"}`,
+        background: ativo ? (accent || "#C9A84C") : (t?.bgElevated || "#1E1E1E"),
+        border: `1px solid ${ativo ? `${accent || "#C9A84C"}50` : (t?.border || "#252525")}`,
         cursor: disabled ? "default" : "pointer",
         position: "relative", transition: "background 0.2s, border-color 0.2s",
         opacity: disabled ? 0.5 : 1,

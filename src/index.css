@@ -45,7 +45,7 @@
   .barto-stat-card { transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
   .barto-stat-card:hover { border-color: #C9A84C30 !important; box-shadow: 0 0 0 1px #C9A84C10, 0 8px 32px #00000060; transform: translateY(-1px); }
   .barto-tr { transition: background 0.12s ease; }
-  .barto-tr:hover { background: #141414; }
+  .barto-tr:hover { background: rgba(0,0,0,0.04); }
   .barto-btn-primary { transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; }
   .barto-btn-primary:not(:disabled):hover { filter: brightness(1.1); transform: translateY(-1px); }
   .barto-btn-primary:not(:disabled):active { transform: scale(0.97); filter: brightness(0.95); }
@@ -94,4 +94,27 @@
   .gold-top-line::before { content:''; position:absolute; top:-1px; left:15%; right:15%; height:1px; background:linear-gradient(90deg,transparent,#C9A84C70,transparent); border-radius:1px; }
   .divider-gold { height:1px; background:linear-gradient(90deg,transparent,#C9A84C30,transparent); }
   .truncate-text { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+}
+
+/* ── Modo Claro ─────────────────────────────────────────────────────────────── */
+:root[style*="color-scheme: light"],
+html[style*="color-scheme: light"] {
+  color-scheme: light;
+}
+
+/* Scrollbar clara */
+html[style*="color-scheme: light"] ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, #C9A84C60);
+}
+
+/* Seleção de texto no modo claro */
+html[style*="color-scheme: light"] ::selection {
+  background: #C9A84C35;
+  color: #16130F;
+}
+
+/* Inputs nativos no modo claro */
+html[style*="color-scheme: light"] select option {
+  background: #FAFAF8;
+  color: #16130F;
 }

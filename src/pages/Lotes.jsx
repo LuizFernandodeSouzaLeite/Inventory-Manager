@@ -12,6 +12,7 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
   const bgCard       = t.bgCard       || "#0F0F0F";
   const bgBody       = t.bgBody       || "#080808";
   const border       = t.border       || "#1E1E1E";
+  const bgElevated   = t.bgElevated   || "#141414";
   const borderMid    = t.borderMid    || "#252525";
 
   const [filtroIng,    setFiltroIng]    = useState("Todos");
@@ -62,10 +63,10 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
     <div>
       {/* Cabeçalho */}
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:"#EDE9DF" }}>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:t.textPrimary||"#EDE9DF" }}>
           Controle de Lotes
         </h2>
-        <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
+        <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
           RASTREIE CADA LOTE · VALIDADE · CONSUMO · CLIQUE PARA DETALHES
         </p>
       </div>
@@ -86,9 +87,9 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
             animation: pulse ? "barto-pulse-red 2.5s infinite" : "none",
           }}>
             <div style={{ position:"absolute", top:-1, left:"15%", right:"15%", height:1, background:`linear-gradient(90deg,transparent,${cor}80,transparent)` }}/>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:10 }}>{label}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:10 }}>{label}</div>
             <div style={{ fontFamily:"'DM Mono',monospace", fontSize:28, fontWeight:600, color:cor, letterSpacing:"-0.04em", lineHeight:1 }}>{valor}</div>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A", marginTop:6 }}>{sub}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A", marginTop:6 }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -98,7 +99,7 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
         <select value={filtroIng} onChange={e=>setFiltroIng(e.target.value)} style={{
           height:FILTRO_H, padding:"0 36px 0 14px", borderRadius:8,
           background:bgCard, border:`1px solid ${border}`,
-          color:"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif",
+          color:t.textSecondary||"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif",
           outline:"none", appearance:"none", cursor:"pointer", minWidth:200,
           backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
           backgroundRepeat:"no-repeat", backgroundPosition:"right 12px center",
@@ -128,7 +129,7 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
           })}
         </div>
 
-        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>
+        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>
           {filtrado.length} lote{filtrado.length!==1?"s":""}
         </span>
       </div>
@@ -139,13 +140,13 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
         {/* Header */}
         <div style={{ display:"grid", gridTemplateColumns:COLS, padding:"12px 24px", background:bgBody, borderBottom:`1px solid ${border}`, gap:16 }}>
           {["LOTE","INGREDIENTE","ENTRADA","VALIDADE","DIAS","CONSUMO","STATUS","CUSTO"].map(h=>(
-            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
+            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
           ))}
         </div>
 
         {filtrado.length === 0 && (
           <div style={{ padding:"40px 0", textAlign:"center" }}>
-            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Nenhum lote encontrado.</p>
+            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Nenhum lote encontrado.</p>
           </div>
         )}
 
@@ -196,21 +197,21 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
 
                 {/* Ingrediente */}
                 <div style={{ minWidth:0 }}>
-                  <div style={{ fontSize:13.5, color:"#EDE9DF", fontWeight:500, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  <div style={{ fontSize:13.5, color:t.textPrimary||"#EDE9DF", fontWeight:500, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                     {ing?.emoji} {ing?.nome}
                   </div>
-                  <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#3A3A3A", marginTop:3, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", marginTop:3, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                     {l.fornecedor || l.observacao || "—"}
                   </div>
                 </div>
 
                 {/* Entrada */}
-                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11.5, color:"#555" }}>
+                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11.5, color:t.textMuted||"#555" }}>
                   {fmtData(l.dataEntrada)}
                 </span>
 
                 {/* Validade */}
-                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:"#C8C4BC", fontWeight:500 }}>
+                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:t.textSecondary||"#C8C4BC", fontWeight:500 }}>
                   {fmtData(l.dataValidade)}
                 </span>
 
@@ -222,14 +223,14 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
                 {/* Consumo */}
                 <div>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
-                    <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#555" }}>
+                    <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#555" }}>
                       {l.quantidadeRestante} / {l.quantidade} {ing?.unidade}
                     </span>
                     <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:barCor, fontWeight:700 }}>
                       {pct.toFixed(0)}%
                     </span>
                   </div>
-                  <div style={{ height:5, borderRadius:3, background:"#161616", overflow:"hidden" }}>
+                  <div style={{ height:5, borderRadius:3, background:bgElevated, overflow:"hidden" }}>
                     <div style={{ height:"100%", width:`${pct}%`, background:barCor, borderRadius:3, transition:"width 0.4s", boxShadow:`0 0 6px ${barCor}50` }}/>
                   </div>
                 </div>
@@ -267,8 +268,8 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
                         ["Custo",       l.custo ? `R$${l.custo.toFixed(2)}` : "Não informado"],
                       ].map(([k,v])=>(
                         <div key={k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"9px 0", borderBottom:`1px solid ${border}` }}>
-                          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A", letterSpacing:"0.04em" }}>{k}</span>
-                          <span style={{ fontSize:12.5, color:"#C8C4BC", fontWeight:500 }}>{v}</span>
+                          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A", letterSpacing:"0.04em" }}>{k}</span>
+                          <span style={{ fontSize:12.5, color:t.textSecondary||"#C8C4BC", fontWeight:500 }}>{v}</span>
                         </div>
                       ))}
                     </div>
@@ -286,20 +287,20 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
                         ["Restante",           `${l.quantidadeRestante} ${ing?.unidade}`,                  barCor],
                       ].map(([k,v,cor])=>(
                         <div key={k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"9px 0", borderBottom:`1px solid ${border}` }}>
-                          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>{k}</span>
+                          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>{k}</span>
                           <span style={{ fontFamily:"'DM Mono',monospace", fontSize:14, color:cor, fontWeight:700 }}>{v}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* Barra grande */}
-                    <div style={{ height:10, borderRadius:5, background:"#161616", overflow:"hidden", marginBottom:6 }}>
+                    <div style={{ height:10, borderRadius:5, background:bgElevated, overflow:"hidden", marginBottom:6 }}>
                       <div style={{ height:"100%", width:`${pct}%`, background:barCor, borderRadius:5, boxShadow:`0 0 10px ${barCor}60`, transition:"width 0.4s" }}/>
                     </div>
                     <div style={{ display:"flex", justifyContent:"space-between" }}>
-                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A" }}>0%</span>
+                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A" }}>0%</span>
                       <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:barCor, fontWeight:700 }}>{pct.toFixed(1)}% restante</span>
-                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A" }}>100%</span>
+                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A" }}>100%</span>
                     </div>
                   </div>
 
@@ -309,7 +310,7 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
                       MOVIMENTAÇÕES ({movsLote.length})
                     </div>
                     {movsLote.length===0 ? (
-                      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>
+                      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>
                         Sem movimentações registradas.
                       </p>
                     ) : (
@@ -323,14 +324,14 @@ export default function Lotes({ lotes, ingredientes, movimentos = [], t = {} }) 
                               <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:m.tipo==="entrada"?"#4ADE80":"#F87171", fontWeight:700, marginLeft:"auto" }}>
                                 {m.tipo==="entrada"?"+":"-"}{m.quantidade} {ing?.unidade}
                               </span>
-                              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#3A3A3A", flexShrink:0 }}>
+                              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", flexShrink:0 }}>
                                 {m.data?.slice(0,10).split("-").reverse().join("/")}
                               </span>
                             </div>
                           );
                         })}
                         {movsLote.length>6 && (
-                          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#2A2A2A", marginTop:8 }}>
+                          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textGhost||"#2A2A2A", marginTop:8 }}>
                             + {movsLote.length-6} movimentos anteriores
                           </div>
                         )}

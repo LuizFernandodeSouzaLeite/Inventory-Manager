@@ -76,7 +76,7 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
       {/* Cabeçalho */}
       <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:20 }}>
         <div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:"#EDE9DF" }}>Ingredientes</h2>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:t.textPrimary||"#EDE9DF" }}>Ingredientes</h2>
           <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim || "#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
             BASE DO SISTEMA · CLIQUE PARA VER DETALHES
           </p>
@@ -102,7 +102,7 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
         {/* Header */}
         <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr 1fr 1fr 1fr 40px", padding:"10px 16px", background:bgBody, borderBottom:`1px solid ${border}` }}>
           {["INGREDIENTE","CATEGORIA","ESTOQUE (UN)","ESTOQUE BASE","MÍN.","CONVERSÃO","STATUS",""].map(h=>(
-            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost || "#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
+            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
           ))}
         </div>
 
@@ -122,7 +122,7 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
               <div style={{ display:"flex", alignItems:"center", gap:10 }}>
                 <span style={{ fontSize:18, flexShrink:0 }}>{ing.emoji}</span>
                 <div>
-                  <div style={{ fontSize:13, color:"#EDE9DF", fontWeight:500 }}>{ing.nome}</div>
+                  <div style={{ fontSize:13, color:t.textPrimary||"#EDE9DF", fontWeight:500 }}>{ing.nome}</div>
                   <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim || "#3A3A3A", marginTop:1 }}>{ing.categoria}</div>
                 </div>
               </div>
@@ -130,17 +130,17 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
               <span style={{ fontSize:12, color:"#555" }}>{ing.categoria}</span>
 
               <div>
-                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:13, color:"#EDE9DF", fontWeight:600 }}>
+                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:13, color:t.textPrimary||"#EDE9DF", fontWeight:600 }}>
                   {estoqueOp % 1 === 0 ? estoqueOp.toFixed(0) : estoqueOp.toFixed(1)}
                 </span>
                 <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim || "#3A3A3A", marginLeft:4 }}>un</span>
               </div>
 
-              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#4A4A4A" }}>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#4A4A4A" }}>
                 {estoqueBase.toFixed(1)} {ing.unidade}
               </span>
 
-              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#4A4A4A" }}>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#4A4A4A" }}>
                 {minimoOp % 1 === 0 ? minimoOp.toFixed(0) : minimoOp.toFixed(1)} un
               </span>
 
@@ -163,13 +163,13 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
 
         {filtrado.length === 0 && (
           <div style={{ padding:"32px 0", textAlign:"center" }}>
-            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost || "#2A2A2A" }}>Nenhum ingrediente encontrado</p>
+            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textDim||"#2A2A2A" }}>Nenhum ingrediente encontrado</p>
           </div>
         )}
       </div>
 
       {/* Hint */}
-      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textGhost || "#2A2A2A", marginTop:10, letterSpacing:"0.04em" }}>
+      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#2A2A2A", marginTop:10, letterSpacing:"0.04em" }}>
         ↑ Clique em qualquer ingrediente para ver detalhes, histórico, gráficos e fornecedores.
       </p>
 
@@ -211,7 +211,7 @@ export default function Estoque({ ingredientes, setIngredientes, lotes, moviment
 
         <div style={{ display:"flex", gap:10 }}>
           <BtnGhost onClick={()=>{ setModal(false); setEditando(null); }} className="flex-1">Cancelar</BtnGhost>
-          <BtnPrimary onClick={salvar} className="flex-1" disabled={!form.nome}>
+          <BtnPrimary onClick={salvar} className="flex-1" disabled={!form.nome} variant="confirm">
             {editando ? "Salvar alterações" : "Salvar ingrediente"}
           </BtnPrimary>
         </div>

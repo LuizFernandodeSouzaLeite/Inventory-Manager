@@ -71,17 +71,17 @@ export const TEMA_PALETAS = {
     borderSoft: "#161616",
     borderMid:  "#252525",
   },
-  darker: {
-    bgBody:     "#020202",
-    bgCard:     "#080808",
-    bgSidebar:  "#040404",
-    bgElevated: "#0D0D0D",
-    bgInput:    "#0D0D0D",
-    bgHover:    "#0D0D0D",
-    bgActive:   "#111111",
-    border:     "#141414",
-    borderSoft: "#0F0F0F",
-    borderMid:  "#1A1A1A",
+  light: {
+    bgBody:     "#F0EDE8",
+    bgCard:     "#FAFAF8",
+    bgSidebar:  "#E8E4DE",
+    bgElevated: "#EDEAE5",
+    bgInput:    "#FAFAF8",
+    bgHover:    "#E8E5DF",
+    bgActive:   "#DED9D2",
+    border:     "#D4CFC6",
+    borderSoft: "#DDD9D2",
+    borderMid:  "#BDB8AF",
   },
   highContrast: {
     bgBody:     "#000000",
@@ -151,10 +151,40 @@ export function buildTheme(prefs) {
     labelCaps: cor.accent + "60",  // letras maiúsculas de seção
   };
 
-    // Aplica CSS variables no :root para label-caps e outros utilitários CSS
+    // No tema claro, inverte as cores de texto e ajusta tokens
+  const isLight = prefs.tema === "light";
+  const textOverride = isLight ? {
+    textPrimary:   "#16130F",
+    textSecondary: "#3A3730",
+    textMuted:     "#7A7268",
+    // Sobrescreve tokens que aparecem hardcoded como cinza escuro
+    // Usado por componentes que leem t.textDim / t.textGhost
+    textDim:   cor.accent + "CC",   // mais visível no fundo claro
+    textGhost: cor.accent + "80",
+    labelCaps: cor.accent + "99",
+    // Bordas e fundos específicos para modo claro
+    bgTableHeader: "#EDEAE4",
+    bgRowHover:    "#E8E4DC",
+    shadowCard:    "0 1px 3px #00000012, 0 4px 12px #0000000A",
+    isLight:       true,
+  } : {
+    bgTableHeader: "#0A0A0A",
+    bgRowHover:    "#141414BB",
+    shadowCard:    "none",
+    isLight:       false,
+  };
+
+  // Aplica CSS variables no :root
   if (typeof document !== "undefined") {
-    document.documentElement.style.setProperty("--label-caps-color", derived.textDim);
+    document.documentElement.style.setProperty("--label-caps-color", textOverride.textDim || derived.textDim);
+    // Modo claro: força scrollbar clara e seleção
+    if (isLight) {
+      document.documentElement.style.setProperty("--scrollbar-thumb", cor.accent + "60");
+      document.documentElement.style.setProperty("color-scheme", "light");
+    } else {
+      document.documentElement.style.setProperty("color-scheme", "dark");
+    }
   }
 
-  return { ...cor, ...tema, ...FIXAS, ...derived };
+  return { ...cor, ...tema, ...FIXAS, ...derived, ...textOverride };
 }

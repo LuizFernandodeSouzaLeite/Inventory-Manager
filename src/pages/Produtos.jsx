@@ -30,6 +30,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
   const bgCard       = t.bgCard       || "#0F0F0F";
   const bgBody       = t.bgBody       || "#080808";
   const border       = t.border       || "#1E1E1E";
+  const bgElevated   = t.bgElevated   || "#141414";
   const borderMid    = t.borderMid    || "#252525";
 
   const [selecionado, setSelecionado] = useState(null); // produto no widget
@@ -99,10 +100,10 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
       {/* Cabeçalho */}
       <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:20 }}>
         <div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:"#EDE9DF" }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:t.textPrimary||"#EDE9DF" }}>
             Produtos & Receitas
           </h2>
-          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
+          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
             CARDÁPIO · RECEITAS · BAIXA AUTOMÁTICA NO PEDIDO
           </p>
         </div>
@@ -124,9 +125,9 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
         ].map(({ label, valor, cor, sub }) => (
           <div key={label} style={{ padding:"16px 18px", borderRadius:10, background:bgCard, border:`1px solid ${cor}25`, position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", top:-1, left:"15%", right:"15%", height:1, background:`linear-gradient(90deg,transparent,${cor}80,transparent)` }}/>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:8 }}>{label}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:8 }}>{label}</div>
             <div style={{ fontFamily:"'DM Mono',monospace", fontSize:24, fontWeight:600, color:cor, letterSpacing:"-0.03em", lineHeight:1 }}>{valor}</div>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A", marginTop:5, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{sub}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A", marginTop:5, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -134,9 +135,9 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
       {/* Filtros */}
       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16, flexWrap:"wrap" }}>
         <div style={{ display:"flex", alignItems:"center", gap:8, padding:"0 14px", height:36, borderRadius:8, background:bgCard, border:`1px solid ${border}` }}>
-          <Icon d={icons.search} size={13} style={{ color:"#3A3A3A" }}/>
+          <Icon d={icons.search} size={13} style={{ color:t.textDim||"#3A3A3A" }}/>
           <input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Buscar produto..."
-            style={{ background:"transparent", border:"none", outline:"none", color:"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif", width:160 }}
+            style={{ background:"transparent", border:"none", outline:"none", color:t.textSecondary||"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif", width:160 }}
           />
         </div>
         <div style={{ display:"flex", gap:4 }}>
@@ -150,7 +151,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
             );
           })}
         </div>
-        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>
+        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>
           {filtrados.length} produto{filtrados.length!==1?"s":""}
         </span>
       </div>
@@ -184,7 +185,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
 
                 {/* Emoji + preço */}
                 <div style={{ fontSize:30, marginBottom:8, lineHeight:1 }}>{p.emoji}</div>
-                <div style={{ fontSize:13.5, fontWeight:700, color:"#EDE9DF", marginBottom:3, paddingRight:52, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                <div style={{ fontSize:13.5, fontWeight:700, color:t.textPrimary||"#EDE9DF", marginBottom:3, paddingRight:52, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                   {p.nome}
                 </div>
                 <div style={{ fontFamily:"'DM Mono',monospace", fontSize:14, fontWeight:700, color:catCor, letterSpacing:"-0.02em", marginBottom:10 }}>
@@ -196,13 +197,13 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
                   {p.receita.slice(0,3).map((r,i)=>{
                     const ing = ingredientes.find(x=>x.id===r.ingredienteId);
                     return (
-                      <span key={i} style={{ fontSize:10, padding:"2px 7px", borderRadius:4, background:"#161616", border:`1px solid #1E1E1E`, color:"#555" }}>
+                      <span key={i} style={{ fontSize:10, padding:"2px 7px", borderRadius:4, background:bgElevated, border:`1px solid #1E1E1E`, color:t.textMuted||"#555" }}>
                         {ing?.emoji} {r.quantidade}×
                       </span>
                     );
                   })}
                   {p.receita.length > 3 && (
-                    <span style={{ fontSize:10, padding:"2px 5px", color:"#333", fontFamily:"'DM Mono',monospace" }}>+{p.receita.length-3}</span>
+                    <span style={{ fontSize:10, padding:"2px 5px", color:t.textDim||"#333", fontFamily:"'DM Mono',monospace" }}>+{p.receita.length-3}</span>
                   )}
                 </div>
 
@@ -217,7 +218,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
           {filtrados.length === 0 && (
             <div style={{ gridColumn:"1/-1", padding:"48px 0", textAlign:"center" }}>
               <div style={{ fontSize:32, marginBottom:10 }}>🍽️</div>
-              <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Nenhum produto encontrado.</p>
+              <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Nenhum produto encontrado.</p>
             </div>
           )}
         </div>
@@ -235,14 +236,14 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
               <div style={{ padding:"20px 20px 16px", borderBottom:`1px solid ${border}` }}>
                 <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:12 }}>
                   <span style={{ fontSize:40 }}>{p.emoji}</span>
-                  <button onClick={()=>setSelecionado(null)} style={{ width:28, height:28, borderRadius:7, background:"#141414", border:`1px solid ${border}`, color:"#444", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.15s" }}
+                  <button onClick={()=>setSelecionado(null)} style={{ width:28, height:28, borderRadius:7, background:bgElevated, border:`1px solid ${border}`, color:t.textMuted||"#444", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.15s" }}
                     onMouseEnter={e=>{ e.currentTarget.style.color="#EDE9DF"; e.currentTarget.style.borderColor=borderMid; }}
                     onMouseLeave={e=>{ e.currentTarget.style.color="#444"; e.currentTarget.style.borderColor=border; }}
                   >
                     <Icon d={icons.x} size={13}/>
                   </button>
                 </div>
-                <div style={{ fontSize:17, fontWeight:700, color:"#EDE9DF", marginBottom:4 }}>{p.nome}</div>
+                <div style={{ fontSize:17, fontWeight:700, color:t.textPrimary||"#EDE9DF", marginBottom:4 }}>{p.nome}</div>
                 <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                   <span style={{ padding:"2px 9px", borderRadius:5, background:catCor+"20", border:`1px solid ${catCor}30`, fontFamily:"'DM Mono',monospace", fontSize:10, color:catCor }}>
                     {p.categoria}
@@ -269,11 +270,11 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
                         <span style={{ width:6, height:6, borderRadius:"50%", background:estOk?"#22C55E":"#EF4444", flexShrink:0 }}/>
                         <span style={{ fontSize:13 }}>{ing?.emoji}</span>
                         <div style={{ minWidth:0 }}>
-                          <div style={{ fontSize:12.5, color:"#C8C4BC", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{ing?.nome}</div>
-                          {conv && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A", marginTop:1 }}>{r.quantidade} un {conv}</div>}
+                          <div style={{ fontSize:12.5, color:t.textSecondary||"#C8C4BC", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{ing?.nome}</div>
+                          {conv && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A", marginTop:1 }}>{r.quantidade} un {conv}</div>}
                         </div>
                       </div>
-                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, fontWeight:600, color:"#EDE9DF", flexShrink:0, marginLeft:8 }}>
+                      <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, fontWeight:600, color:t.textPrimary||"#EDE9DF", flexShrink:0, marginLeft:8 }}>
                         {r.quantidade} un
                       </span>
                     </div>
@@ -285,11 +286,11 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
               <div style={{ padding:"10px 20px", borderBottom:`1px solid ${border}`, display:"flex", gap:12 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:5 }}>
                   <span style={{ width:6, height:6, borderRadius:"50%", background:"#22C55E" }}/>
-                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A" }}>Estoque OK</span>
+                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A" }}>Estoque OK</span>
                 </div>
                 <div style={{ display:"flex", alignItems:"center", gap:5 }}>
                   <span style={{ width:6, height:6, borderRadius:"50%", background:"#EF4444" }}/>
-                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A" }}>Estoque baixo</span>
+                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A" }}>Estoque baixo</span>
                 </div>
               </div>
 
@@ -320,15 +321,15 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
       >
         {/* Linha 1: emoji rápido */}
         <div style={{ marginBottom:16 }}>
-          <label style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, letterSpacing:"0.1em", textTransform:"uppercase", color:"#555", display:"block", marginBottom:8 }}>Emoji rápido</label>
+          <label style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, letterSpacing:"0.1em", textTransform:"uppercase", color:t.textMuted||"#555", display:"block", marginBottom:8 }}>Emoji rápido</label>
           <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
             {EMOJIS_RAP.map(e=>(
-              <button key={e} onClick={()=>setForm(f=>({...f,emoji:e}))} style={{ width:36, height:36, borderRadius:8, fontSize:18, border:`1px solid ${form.emoji===e?accentBorder:border}`, background:form.emoji===e?accentDim:"#141414", cursor:"pointer", transition:"all 0.15s" }}>
+              <button key={e} onClick={()=>setForm(f=>({...f,emoji:e}))} style={{ width:36, height:36, borderRadius:8, fontSize:18, border:`1px solid ${form.emoji===e?accentBorder:border}`, background:form.emoji===e?accentDim:bgElevated, cursor:"pointer", transition:"all 0.15s" }}>
                 {e}
               </button>
             ))}
             <input value={form.emoji} onChange={e=>setForm(f=>({...f,emoji:e.target.value}))} placeholder="ou cole"
-              style={{ width:60, padding:"0 8px", height:36, borderRadius:8, background:"#141414", border:`1px solid ${border}`, color:"#C8C4BC", fontSize:16, outline:"none", textAlign:"center" }}
+              style={{ width:60, padding:"0 8px", height:36, borderRadius:8, background:bgElevated, border:`1px solid ${border}`, color:t.textSecondary||"#C8C4BC", fontSize:16, outline:"none", textAlign:"center" }}
             />
           </div>
         </div>
@@ -345,8 +346,8 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
         {/* Receita */}
         <div style={{ borderTop:`1px solid ${border}`, paddingTop:16, marginTop:4 }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
-            <span style={{ fontSize:13, fontWeight:600, color:"#EDE9DF" }}>
-              Receita <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#3A3A3A", marginLeft:6 }}>EM UNIDADES OPERACIONAIS</span>
+            <span style={{ fontSize:13, fontWeight:600, color:t.textPrimary||"#EDE9DF" }}>
+              Receita <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", marginLeft:6 }}>EM UNIDADES OPERACIONAIS</span>
             </span>
             <button onClick={addItem} style={{ display:"flex", alignItems:"center", gap:5, fontSize:12.5, color:accent, background:"none", border:"none", cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>
               <Icon d={icons.plus} size={13}/> Adicionar
@@ -355,7 +356,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
 
           {receita.length===0 && (
             <div style={{ padding:"20px 0", textAlign:"center" }}>
-              <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Nenhum ingrediente adicionado.</p>
+              <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Nenhum ingrediente adicionado.</p>
               <button onClick={addItem} style={{ marginTop:8, padding:"7px 16px", borderRadius:7, background:accentDim, border:`1px solid ${accentBorder}`, color:accent, fontSize:12.5, fontFamily:"'DM Sans',sans-serif", cursor:"pointer" }}>
                 + Adicionar primeiro ingrediente
               </button>
@@ -370,19 +371,19 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
                 <div key={i} style={{ display:"flex", alignItems:"center", gap:8 }}>
                   {/* Seletor */}
                   <select value={r.ingredienteId} onChange={e=>updItem(i,"ingredienteId",e.target.value)}
-                    style={{ flex:1, padding:"8px 10px", borderRadius:7, background:"#141414", border:`1px solid ${borderMid}`, color:"#D4D0C8", fontSize:13, outline:"none", fontFamily:"'DM Sans',sans-serif" }}>
+                    style={{ flex:1, padding:"8px 10px", borderRadius:7, background:bgElevated, border:`1px solid ${borderMid}`, color:t.textSecondary||"#D4D0C8", fontSize:13, outline:"none", fontFamily:"'DM Sans',sans-serif" }}>
                     <option value="">Selecionar ingrediente...</option>
                     {ingredientes.map(x=><option key={x.id} value={x.id}>{x.emoji} {x.nome}</option>)}
                   </select>
                   {/* Quantidade */}
                   <input type="number" min="0.5" step="0.5" value={r.quantidade} onChange={e=>updItem(i,"quantidade",e.target.value)}
-                    style={{ width:64, padding:"8px", borderRadius:7, background:"#141414", border:`1px solid ${borderMid}`, color:"#D4D0C8", fontSize:13, outline:"none", textAlign:"center", fontFamily:"'DM Mono',monospace" }}
+                    style={{ width:64, padding:"8px", borderRadius:7, background:bgElevated, border:`1px solid ${borderMid}`, color:t.textSecondary||"#D4D0C8", fontSize:13, outline:"none", textAlign:"center", fontFamily:"'DM Mono',monospace" }}
                   />
-                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#555", width:18 }}>un</span>
+                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#555", width:18 }}>un</span>
                   {/* Conversão inline */}
                   {conv && <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:accent+"70", whiteSpace:"nowrap" }}>{conv}</span>}
                   {/* Remover */}
-                  <button onClick={()=>remItem(i)} style={{ width:28, height:28, borderRadius:6, background:"none", border:"none", color:"#333", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"color 0.15s" }}
+                  <button onClick={()=>remItem(i)} style={{ width:28, height:28, borderRadius:6, background:"none", border:"none", color:t.textDim||"#333", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"color 0.15s" }}
                     onMouseEnter={e=>e.currentTarget.style.color="#EF4444"}
                     onMouseLeave={e=>e.currentTarget.style.color="#333"}
                   ><Icon d={icons.x} size={14}/></button>
@@ -397,7 +398,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
           <div style={{ marginTop:16, padding:"12px 14px", borderRadius:8, background:accentDim, border:`1px solid ${accentBorder}`, display:"flex", alignItems:"center", gap:12 }}>
             <span style={{ fontSize:22 }}>{form.emoji}</span>
             <div>
-              <div style={{ fontSize:13.5, fontWeight:600, color:"#EDE9DF" }}>{form.nome}</div>
+              <div style={{ fontSize:13.5, fontWeight:600, color:t.textPrimary||"#EDE9DF" }}>{form.nome}</div>
               <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:accent, marginTop:2 }}>
                 {form.categoria} · R$ {Number(form.preco||0).toFixed(2)} · {receita.filter(r=>r.ingredienteId).length} ingrediente{receita.filter(r=>r.ingredienteId).length!==1?"s":""}
               </div>
@@ -407,7 +408,7 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
 
         <div style={{ display:"flex", gap:10, marginTop:16 }}>
           <BtnGhost onClick={()=>{ setModal(false); setEditando(null); }} className="flex-1">Cancelar</BtnGhost>
-          <BtnPrimary onClick={salvar} className="flex-1" disabled={!form.nome}>
+          <BtnPrimary onClick={salvar} className="flex-1" disabled={!form.nome} variant="confirm">
             {editando ? "Salvar alterações" : "Salvar produto"}
           </BtnPrimary>
         </div>
@@ -417,10 +418,10 @@ export default function Produtos({ produtos, setProdutos, ingredientes, lotes = 
       <Modal open={!!confirmar} onClose={()=>setConfirmar(null)} title="Excluir produto" width="max-w-sm">
         <div style={{ textAlign:"center", padding:"12px 0 20px" }}>
           <div style={{ fontSize:44, marginBottom:12 }}>{confirmar?.emoji}</div>
-          <p style={{ fontSize:14, color:"#C8C4BC", fontWeight:500, marginBottom:8 }}>
-            Excluir <strong style={{ color:"#EDE9DF" }}>{confirmar?.nome}</strong>?
+          <p style={{ fontSize:14, color:t.textSecondary||"#C8C4BC", fontWeight:500, marginBottom:8 }}>
+            Excluir <strong style={{ color:t.textPrimary||"#EDE9DF" }}>{confirmar?.nome}</strong>?
           </p>
-          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#3A3A3A", lineHeight:1.7 }}>
+          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textDim||"#3A3A3A", lineHeight:1.7 }}>
             Esta ação não pode ser desfeita.<br/>O produto será removido permanentemente.
           </p>
         </div>

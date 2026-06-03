@@ -40,7 +40,7 @@ function Tooltip({ tooltip, textDim = "#3A3A3A" }) {
       top: tooltip.y - 10,
       zIndex: 9999,
       pointerEvents: "none",
-      background: "#0A0A0A",
+      background: bgBody,
       border: `1px solid ${tooltip.cor || "#C9A84C"}40`,
       borderRadius: 8,
       padding: "8px 12px",
@@ -53,7 +53,7 @@ function Tooltip({ tooltip, textDim = "#3A3A3A" }) {
       {tooltip.serie && (
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: tooltip.cor, flexShrink: 0 }}/>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9.5, color: "#555", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9.5, color: "#888", letterSpacing: "0.06em", textTransform: "uppercase" }}>
             {tooltip.serie}
           </span>
         </div>
@@ -70,7 +70,7 @@ function Tooltip({ tooltip, textDim = "#3A3A3A" }) {
       </div>
       {/* Sub-info opcional */}
       {tooltip.sub && (
-        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#444", marginTop: 3 }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#888", marginTop: 3 }}>
           {tooltip.sub}
         </div>
       )}
@@ -405,8 +405,8 @@ function GraficoCard({ titulo, sub, chave, tipos, setTipo, series, labels, altur
     <div style={{ background:bgCard, border:`1px solid ${border}`, borderRadius:10, padding:"16px 18px" }}>
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
         <div>
-          <div style={{ fontFamily:"'Syne',sans-serif", fontWeight:600, fontSize:13.5, color:"#C8C4BC" }}>{titulo}</div>
-          {sub && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A", marginTop:3, letterSpacing:"0.08em" }}>{sub}</div>}
+          <div style={{ fontFamily:"'Syne',sans-serif", fontWeight:600, fontSize:13.5, color:t.textSecondary||"#C8C4BC" }}>{titulo}</div>
+          {sub && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A", marginTop:3, letterSpacing:"0.08em" }}>{sub}</div>}
         </div>
         <SeletorTipo tipo={tipo} onChange={v => setTipo(chave, v)} accent={accent} accentDim={accentDim} accentBorder={accentBorder} border={border} bgCard={bgBody}/>
       </div>
@@ -416,7 +416,7 @@ function GraficoCard({ titulo, sub, chave, tipos, setTipo, series, labels, altur
           {series.map(s => (
             <div key={s.nome} style={{ display:"flex", alignItems:"center", gap:5 }}>
               <div style={{ width:7, height:7, borderRadius:2, background:s.cor, flexShrink:0 }}/>
-              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#555" }}>{s.nome}</span>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textMuted||"#555" }}>{s.nome}</span>
             </div>
           ))}
         </div>
@@ -510,8 +510,8 @@ export default function Graficos({ ingredientes, lotes, movimentos, pedidos, fin
       {/* Cabeçalho */}
       <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:24 }}>
         <div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:"#EDE9DF" }}>Gráficos</h2>
-          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A", marginTop:5, letterSpacing:"0.08em" }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:t.textPrimary||"#EDE9DF" }}>Gráficos</h2>
+          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A", marginTop:5, letterSpacing:"0.08em" }}>
             VISÃO VISUAL COMPLETA · PASSE O MOUSE PARA VER DETALHES
           </p>
         </div>
@@ -529,7 +529,7 @@ export default function Graficos({ ingredientes, lotes, movimentos, pedidos, fin
 
           {/* Tipo global */}
           <div style={{ display:"flex", alignItems:"center", gap:6, padding:"6px 10px", borderRadius:8, background:bgCard, border:`1px solid ${border}` }}>
-            <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9, color:"#3A3A3A", letterSpacing:"0.08em", whiteSpace:"nowrap" }}>TODOS:</span>
+            <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9, color:t.textDim||"#3A3A3A", letterSpacing:"0.08em", whiteSpace:"nowrap" }}>TODOS:</span>
             <SeletorTipo tipo={prefs?.tipoGrafico||"bar"} onChange={setTipoGlobal} accent={accent} accentDim={accentDim} accentBorder={accentBorder} border={border} bgCard={bgBody}/>
           </div>
         </div>
@@ -594,7 +594,7 @@ export default function Graficos({ ingredientes, lotes, movimentos, pedidos, fin
 
       {/* Rodapé */}
       <div style={{ display:"flex", flexWrap:"wrap", gap:16, marginTop:24, paddingTop:16, borderTop:`1px solid ${border}` }}>
-        <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#3A3A3A", alignSelf:"center", letterSpacing:"0.08em" }}>TIPO GLOBAL:</span>
+        <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", alignSelf:"center", letterSpacing:"0.08em" }}>TIPO GLOBAL:</span>
         {TIPOS.map(tp => (
           <span key={tp.id} style={{ display:"inline-flex", alignItems:"center", gap:5, fontFamily:"'DM Mono',monospace", fontSize:10, color:(prefs?.tipoGrafico||"bar")===tp.id?accent:"#333" }}>
             <Icon d={tp.icon} size={11}/>

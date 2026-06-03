@@ -22,6 +22,7 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
   const bgCard       = t.bgCard       || "#0F0F0F";
   const bgBody       = t.bgBody       || "#080808";
   const border       = t.border       || "#1E1E1E";
+  const bgElevated   = t.bgElevated   || "#141414";
   const borderMid    = t.borderMid    || "#252525";
 
   const [modal,     setModal]     = useState(false);
@@ -123,10 +124,10 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
       {/* Cabeçalho */}
       <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:24 }}>
         <div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:"#EDE9DF" }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:22, letterSpacing:"-0.03em", color:t.textPrimary||"#EDE9DF" }}>
             Saídas de Estoque
           </h2>
-          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
+          <p style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A", marginTop:5, letterSpacing:"0.06em" }}>
             SAÍDAS MANUAIS · DESCARTES · PEDIDOS BAIXAM AUTOMATICAMENTE
           </p>
         </div>
@@ -159,9 +160,9 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
             position:"relative", overflow:"hidden",
           }}>
             <div style={{ position:"absolute", top:-1, left:"15%", right:"15%", height:1, background:`linear-gradient(90deg,transparent,${cor}80,transparent)` }}/>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:10 }}>{label}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#3A3A3A", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:10 }}>{label}</div>
             <div style={{ fontFamily:"'DM Mono',monospace", fontSize:28, fontWeight:600, color:cor, letterSpacing:"-0.04em", lineHeight:1 }}>{valor}</div>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A", marginTop:6 }}>{sub}</div>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A", marginTop:6 }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -170,9 +171,9 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16, flexWrap:"wrap" }}>
         {/* Busca */}
         <div style={{ display:"flex", alignItems:"center", gap:8, padding:"0 14px", height:38, borderRadius:8, background:bgCard, border:`1px solid ${border}` }}>
-          <Icon d={icons.search} size={14} style={{ color:"#3A3A3A", flexShrink:0 }}/>
+          <Icon d={icons.search} size={14} style={{ color:t.textDim||"#3A3A3A", flexShrink:0 }}/>
           <input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Buscar ingrediente..."
-            style={{ background:"transparent", border:"none", outline:"none", color:"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif", width:190 }}
+            style={{ background:"transparent", border:"none", outline:"none", color:t.textSecondary||"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif", width:190 }}
           />
         </div>
 
@@ -205,7 +206,7 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
         <select value={filtroIng} onChange={e=>setFiltroIng(e.target.value)} style={{
           height:38, padding:"0 36px 0 14px", borderRadius:8,
           background:bgCard, border:`1px solid ${border}`,
-          color:"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif",
+          color:t.textSecondary||"#C8C4BC", fontSize:13, fontFamily:"'DM Sans',sans-serif",
           outline:"none", appearance:"none", cursor:"pointer", minWidth:190,
           backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
           backgroundRepeat:"no-repeat", backgroundPosition:"right 12px center",
@@ -214,7 +215,7 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
           {ingredientes.map(i=><option key={i.id} value={i.id}>{i.emoji} {i.nome}</option>)}
         </select>
 
-        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>
+        <span style={{ marginLeft:"auto", fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>
           {filtradas.length} registro{filtradas.length!==1?"s":""}
         </span>
       </div>
@@ -224,14 +225,14 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
         {/* Header */}
         <div style={{ display:"grid", gridTemplateColumns:COLS, gap:16, padding:"12px 24px", background:bgBody, borderBottom:`1px solid ${border}` }}>
           {["INGREDIENTE","TIPO","QTD","LOTE","MOTIVO","DATA","POR","PEDIDO"].map(h=>(
-            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
+            <span key={h} style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textDim||"#2A2A2A", letterSpacing:"0.12em" }}>{h}</span>
           ))}
         </div>
 
         {filtradas.length === 0 && (
           <div style={{ padding:"40px 0", textAlign:"center" }}>
             <div style={{ fontSize:28, marginBottom:10 }}>📤</div>
-            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Nenhuma saída encontrada.</p>
+            <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Nenhuma saída encontrada.</p>
           </div>
         )}
 
@@ -260,8 +261,8 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                 <div style={{ display:"flex", alignItems:"center", gap:10, minWidth:0 }}>
                   <span style={{ fontSize:18, flexShrink:0 }}>{ing?.emoji}</span>
                   <div style={{ minWidth:0 }}>
-                    <div style={{ fontSize:13.5, color:"#EDE9DF", fontWeight:500, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{ing?.nome}</div>
-                    <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#3A3A3A", marginTop:2 }}>{ing?.categoria}</div>
+                    <div style={{ fontSize:13.5, color:t.textPrimary||"#EDE9DF", fontWeight:500, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{ing?.nome}</div>
+                    <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", marginTop:2 }}>{ing?.categoria}</div>
                   </div>
                 </div>
 
@@ -276,17 +277,17 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                 </span>
 
                 {/* Lote */}
-                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:isExp?ts.color:"#555", fontWeight:isExp?700:400 }}>
+                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:isExp?ts.color:t.textMuted||"#555", fontWeight:isExp?700:400 }}>
                   {lote ? `L${String(lote.numero).padStart(2,"0")}` : "—"}
                 </span>
 
                 {/* Motivo */}
-                <span style={{ fontSize:12.5, color:"#666", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                <span style={{ fontSize:12.5, color:t.textMuted||"#666", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                   {m.motivo || "—"}
                 </span>
 
                 {/* Data */}
-                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#555" }}>
+                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#555" }}>
                   {m.data?.slice(0,16).replace("T"," ")}
                 </span>
 
@@ -297,7 +298,7 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                       {m.usuario?.slice(0,2).toUpperCase()}
                     </span>
                   </div>
-                  <span style={{ fontSize:12, color:"#555", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  <span style={{ fontSize:12, color:t.textMuted||"#555", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                     {m.usuario?.split(" ")[0]}
                   </span>
                 </div>
@@ -306,7 +307,7 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                 {m.pedidoId ? (
                   <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:accent, fontWeight:600 }}>{m.pedidoId}</span>
                 ) : (
-                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Manual</span>
+                  <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Manual</span>
                 )}
               </div>
 
@@ -330,8 +331,8 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                       ["Pedido",          m.pedidoId || "Saída manual"],
                     ].map(([k,v])=>(
                       <div key={k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:`1px solid ${border}` }}>
-                        <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>{k}</span>
-                        <span style={{ fontSize:12.5, color:"#C8C4BC", fontWeight:500, maxWidth:280, textAlign:"right", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{v}</span>
+                        <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>{k}</span>
+                        <span style={{ fontSize:12.5, color:t.textSecondary||"#C8C4BC", fontWeight:500, maxWidth:280, textAlign:"right", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{v}</span>
                       </div>
                     ))}
                   </div>
@@ -347,18 +348,18 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                           return (
                             <div style={{ marginBottom:20 }}>
                               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#555" }}>Restante após saída</span>
+                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textMuted||"#555" }}>Restante após saída</span>
                                 <span style={{ fontFamily:"'DM Mono',monospace", fontSize:14, color:barCor, fontWeight:700 }}>
                                   {lote.quantidadeRestante} / {lote.quantidade} {ing?.unidade}
                                 </span>
                               </div>
-                              <div style={{ height:8, borderRadius:4, background:"#161616", overflow:"hidden", marginBottom:6 }}>
+                              <div style={{ height:8, borderRadius:4, background:bgElevated, overflow:"hidden", marginBottom:6 }}>
                                 <div style={{ height:"100%", width:`${pct}%`, background:barCor, borderRadius:4, boxShadow:`0 0 8px ${barCor}60` }}/>
                               </div>
                               <div style={{ display:"flex", justifyContent:"space-between" }}>
-                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A" }}>Esgotado</span>
+                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A" }}>Esgotado</span>
                                 <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:barCor, fontWeight:700 }}>{pct.toFixed(1)}% restante</span>
-                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#2A2A2A" }}>Completo</span>
+                                <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textGhost||"#2A2A2A" }}>Completo</span>
                               </div>
                             </div>
                           );
@@ -372,13 +373,13 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
                           ["Data validade", lote.dataValidade],
                         ].map(([k,v])=>(
                           <div key={k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:`1px solid ${border}` }}>
-                            <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>{k}</span>
-                            <span style={{ fontSize:12.5, color:"#C8C4BC", fontWeight:500 }}>{v}</span>
+                            <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>{k}</span>
+                            <span style={{ fontSize:12.5, color:t.textSecondary||"#C8C4BC", fontWeight:500 }}>{v}</span>
                           </div>
                         ))}
                       </>
                     ) : (
-                      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#2A2A2A" }}>Lote não encontrado.</p>
+                      <p style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:t.textGhost||"#2A2A2A" }}>Lote não encontrado.</p>
                     )}
                   </div>
                 </div>
@@ -403,12 +404,12 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
         {ingSel && (
           <div style={{ padding:"10px 14px", borderRadius:8, background:bgBody, border:`1px solid ${border}`, marginBottom:16 }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:"#3A3A3A" }}>Disponível em estoque</span>
+              <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10.5, color:t.textDim||"#3A3A3A" }}>Disponível em estoque</span>
               <span style={{ fontFamily:"'DM Mono',monospace", fontSize:14, color:estoqueOp>0?"#4ADE80":"#EF4444", fontWeight:700 }}>
                 {estoqueOp.toFixed(1)} un
               </span>
             </div>
-            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#2A2A2A", marginTop:4 }}>
+            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textGhost||"#2A2A2A", marginTop:4 }}>
               = {estoqueAtual.toFixed(2)} {ingSel.unidade} · FIFO — lotes com validade mais próxima primeiro
             </div>
           </div>
@@ -435,14 +436,14 @@ export default function Saidas({ ingredientes, lotes, setLotes, movimentos, setM
         )}
 
         <div style={{ display:"flex", gap:10, marginTop:4 }}>
-          <button onClick={()=>{ setModal(false); setErro(""); }} style={{ flex:1, padding:"10px", borderRadius:8, background:"#141414", border:`1px solid ${borderMid}`, color:"#666", fontFamily:"'DM Sans',sans-serif", fontSize:13, cursor:"pointer" }}>
+          <button onClick={()=>{ setModal(false); setErro(""); }} style={{ flex:1, padding:"10px", borderRadius:8, background:bgElevated, border:`1px solid ${borderMid}`, color:t.textMuted||"#666", fontFamily:"'DM Sans',sans-serif", fontSize:13, cursor:"pointer" }}>
             Cancelar
           </button>
           <button onClick={registrar}
             disabled={!form.ingredienteId || !form.quantidade || excede}
             style={{
               flex:1, padding:"10px", borderRadius:8, border:"none",
-              background: !form.ingredienteId||!form.quantidade||excede ? "#2A2A2A" : "linear-gradient(135deg,#EF4444,#DC2626)",
+              background: !form.ingredienteId||!form.quantidade||excede ? "#2A2A2A" : "linear-gradient(135deg,#34D399,#10B981)",
               color: !form.ingredienteId||!form.quantidade||excede ? "#555" : "#fff",
               fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:600,
               cursor: !form.ingredienteId||!form.quantidade||excede ? "not-allowed" : "pointer",
