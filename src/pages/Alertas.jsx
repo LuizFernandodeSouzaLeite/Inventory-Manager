@@ -93,7 +93,7 @@ export default function Alertas({ alertas, retiradas = [], confirmarRetirada, co
             <div style={{ padding:"8px 20px" }}>
               {pendentes.map((r, idx) => (
                 <div key={r.id}>
-                  <LoteRetiradaCard retirada={r} onConfirmar={()=>confirmarRetirada(r.id)} border={border} bgBody={bgBody}/>
+                  <LoteRetiradaCard retirada={r} onConfirmar={()=>confirmarRetirada(r.id)} border={border} bgBody={bgBody} bgElevated={bgElevated} t={t}/>
                   {idx < pendentes.length-1 && <div style={{ height:1, background:"#EF44441A" }}/>}
                 </div>
               ))}
@@ -240,15 +240,16 @@ function AlertaCard({ alerta: a, bgCard, border, t={} }) {
 }
 
 // ── Card de retirada física pendente ─────────────────────────────────────────
-function LoteRetiradaCard({ retirada: r, onConfirmar, border, bgBody }) {
+function LoteRetiradaCard({ retirada: r, onConfirmar, border, bgBody, bgElevated="#141414", t={} }) {
   const [confirmando, setConfirmando] = useState(false);
   const handle = () => { setConfirmando(true); setTimeout(()=>onConfirmar(), 400); };
+  const textPrimary = t.textPrimary || "#EDE9DF";
 
   return (
     <div style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 0", opacity:confirmando?0.4:1, transition:"opacity 0.3s" }}>
       <span style={{ fontSize:24, flexShrink:0 }}>{r.ingredienteEmoji}</span>
       <div style={{ flex:1, minWidth:0 }}>
-        <div style={{ fontSize:14, color:t.textPrimary||"#EDE9DF", fontWeight:600 }}>
+        <div style={{ fontSize:14, color:textPrimary, fontWeight:600 }}>
           {r.ingredienteNome}
           <span style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#EF444470", marginLeft:10, fontWeight:400 }}>
             Lote {r.loteNumero}
