@@ -24,13 +24,13 @@ const PERIODOS = [
 ];
 
 // ── Tooltip ───────────────────────────────────────────────────────────────────
-function Tooltip({ tooltip, t={} }) {
+function Tooltip({ tooltip }) {
   if (!tooltip.visible) return null;
   return (
     <div style={{
       position:"fixed", left:tooltip.x+14, top:tooltip.y-10,
       zIndex:9999, pointerEvents:"none",
-      background:bgCard, border:`1px solid ${tooltip.cor||"#C9A84C"}40`,
+      background:"#0A0A0A", border:`1px solid ${tooltip.cor||"#C9A84C"}40`,
       borderRadius:8, padding:"8px 12px",
       boxShadow:`0 8px 24px #00000080, 0 0 0 1px ${tooltip.cor||"#C9A84C"}15`,
       minWidth:130, maxWidth:220,
@@ -39,13 +39,13 @@ function Tooltip({ tooltip, t={} }) {
       {tooltip.serie && (
         <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5 }}>
           <div style={{ width:6, height:6, borderRadius:"50%", background:tooltip.cor, flexShrink:0 }}/>
-          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textMuted||"#555", letterSpacing:"0.06em", textTransform:"uppercase" }}>
+          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#888", letterSpacing:"0.06em", textTransform:"uppercase" }}>
             {tooltip.serie}
           </span>
         </div>
       )}
       {tooltip.label && (
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", marginBottom:4 }}>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#888", marginBottom:4 }}>
           {tooltip.label}
         </div>
       )}
@@ -53,7 +53,7 @@ function Tooltip({ tooltip, t={} }) {
         {tooltip.valor}
       </div>
       {tooltip.sub && (
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textMuted||"#444", marginTop:3 }}>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#888", marginTop:3 }}>
           {tooltip.sub}
         </div>
       )}

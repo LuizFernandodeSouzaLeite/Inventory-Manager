@@ -31,7 +31,7 @@ const CHAVES = ["entVsSaid","lucro","custos","estoqueAtual","validades","movDia"
 function mkTipos(v) { return Object.fromEntries(CHAVES.map(k => [k, v])); }
 
 // ── Tooltip flutuante ─────────────────────────────────────────────────────────
-function Tooltip({ tooltip, textDim = "#3A3A3A" }) {
+function Tooltip({ tooltip, textDim = "#888" }) {
   if (!tooltip.visible) return null;
   return (
     <div style={{
@@ -40,7 +40,7 @@ function Tooltip({ tooltip, textDim = "#3A3A3A" }) {
       top: tooltip.y - 10,
       zIndex: 9999,
       pointerEvents: "none",
-      background: bgBody,
+      background: "#0A0A0A",
       border: `1px solid ${tooltip.cor || "#C9A84C"}40`,
       borderRadius: 8,
       padding: "8px 12px",

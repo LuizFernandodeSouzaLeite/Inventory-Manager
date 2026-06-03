@@ -29,12 +29,12 @@ function Tooltip({ tt }) {
       {tt.serie && (
         <div style={{ display:"flex", alignItems:"center", gap:5, marginBottom:4 }}>
           <div style={{ width:6, height:6, borderRadius:"50%", background:tt.cor }}/>
-          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:t.textMuted||"#555", textTransform:"uppercase", letterSpacing:"0.06em" }}>{tt.serie}</span>
+          <span style={{ fontFamily:"'DM Mono',monospace", fontSize:9.5, color:"#888", textTransform:"uppercase", letterSpacing:"0.06em" }}>{tt.serie}</span>
         </div>
       )}
-      {tt.label && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textDim||"#3A3A3A", marginBottom:3 }}>{tt.label}</div>}
+      {tt.label && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#888", marginBottom:3 }}>{tt.label}</div>}
       <div style={{ fontFamily:"'DM Mono',monospace", fontSize:16, fontWeight:600, color:tt.cor||"#EDE9DF" }}>{tt.valor}</div>
-      {tt.sub && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:t.textMuted||"#444", marginTop:2 }}>{tt.sub}</div>}
+      {tt.sub && <div style={{ fontFamily:"'DM Mono',monospace", fontSize:10, color:"#888", marginTop:2 }}>{tt.sub}</div>}
     </div>
   );
 }
